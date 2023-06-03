@@ -1,0 +1,32 @@
+version: "1.0"
+
+services:
+  users-service:
+    build: ./services/users
+    container_name: users-service
+    ports:
+      - "4001:4001"
+    environment:
+      - DB_URI=${DB_URI}
+      - DB_NAME=${DB_NAME}
+      - NODE_ENV=${NODE_ENV}
+  app-services:
+    build: ./services/app
+    container_name: app-services
+    ports:
+      - "4002:4002"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRETKEY=${SECRETKEY}
+  orchestrator:
+    build: ./orchestrator
+    container_name: orchestrator
+    ports:
+      - "80:4000"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - URL_USERS=${URL_USERS}
+      - URL_APP=${URL_APP}
+      - REDIS_URL=${REDIS_URL}
+      - REDIS_PORT=${REDIS_PORT}
